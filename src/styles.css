@@ -2383,3 +2383,34 @@ strong {
     text-decoration: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Touch target floor (WCAG 2.5.5 / Apple HIG: 44x44 minimum).
+   An audit at 390px found 22 controls under 44px - nav icons, the Resume
+   button, the Download CV / Copy Email pair and the project filter pills.
+   Pointer-coarse scopes this to touch input so the desktop sizing is
+   untouched; the inline-flex centring keeps labels optically centred as the
+   boxes grow.
+--------------------------------------------------------------------------- */
+@media (pointer: coarse), (max-width: 760px) {
+  .icon-btn,
+  .pill-btn,
+  .btn-micro,
+  .tab-trigger,
+  .btn,
+  .nav-cta,
+  .brand,
+  header button,
+  header a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-btn,
+  .brand { min-width: 44px; }
+
+  /* Pills keep their compact look but gain a tappable box. */
+  .pill-btn { padding-block: 10px; }
+}

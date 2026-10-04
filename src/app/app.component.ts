@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  OnInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -94,7 +95,7 @@ export interface Tech {
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements AfterViewInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private host = inject(ElementRef<HTMLElement>);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
@@ -143,10 +144,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   headline = 'Murala Thirupathi';
   roleLine = 'I turn complex enterprise workflows into software that stays fast, resilient, and correct in production.';
   intro =
-    'Backend-first full-stack developer with 5+ years building Java, Spring Boot, and Angular products across HRMS, health, fleet, invoicing, and security. At AITITUDE IT I introduced the platform’s first production AI features, tuned high-latency queries with Redis, and built scalable multi-tenant architectures teams trust every day.';
+    'Backend-first full-stack developer with 5+ years building Java, Spring Boot, and Angular products across HRMS, health, fleet, invoicing, and security. At Aititude IT I introduced the platform’s first production AI features, tuned high-latency queries with Redis, and built scalable multi-tenant architectures teams trust every day.';
 
   signals: Signal[] = [
-    { label: 'Core Stack', value: 'Java 17/21 · Spring Boot 3 · Angular 18' },
+    { label: 'Core Stack', value: 'Java 17 · Spring Boot 3 · Angular 18' },
     { label: 'Experience', value: '5+ Years Building Multi-Tenant SaaS' },
     { label: 'Notice Period', value: 'Immediate / Serving Notice (Ready to Join)' },
     { label: 'Location / Work Mode', value: 'Hyderabad (HITEC City / Fin District / Hybrid)' }
@@ -446,13 +447,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       title: 'Backend Architecture & APIs',
       blurb:
         'Production-tested Java and Spring Boot design: high-throughput REST APIs, optimized SQL via JdbcTemplate, JPA/Hibernate, multi-tenant database isolation, Redis caching, and JWT/RBAC security.',
-      chips: ['Java 17/21', 'Spring Boot 3', 'REST APIs', 'JdbcTemplate', 'JPA/Hibernate', 'MySQL', 'SQL Server', 'Redis', 'JWT/RBAC']
+      chips: ['Java 17', 'Spring Boot 3', 'REST APIs', 'JdbcTemplate', 'JPA/Hibernate', 'MySQL', 'SQL Server', 'Redis', 'JWT/RBAC']
     },
     {
       title: 'Enterprise Frontend & UI',
       blurb:
         'Angular applications engineered for dense enterprise workflows: complex reactive forms, Kanban boards, tabular data with virtual scrolling, real-time validations, and clean state architecture.',
-      chips: ['Angular 18/16', 'TypeScript', 'RxJS', 'Standalone Components', 'HTML5/CSS3', 'Bootstrap 5', 'Responsive Design']
+      chips: ['Angular 16-18', 'TypeScript', 'RxJS', 'Standalone Components', 'HTML5/CSS3', 'Bootstrap 5', 'Responsive Design']
     },
     {
       title: 'Practical AI & System Safety',
@@ -468,16 +469,19 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   ];
 
+  // Icons self-hosted from devicon (MIT) in public/tech/ rather than loaded
+  // from a CDN: corporate networks often block third-party CDNs, and this
+  // row is 40KB total.
   stack: Tech[] = [
-    { name: 'Java', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', category: 'Backend' },
-    { name: 'Spring Boot', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg', category: 'Backend' },
-    { name: 'Angular', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angular/angular-original.svg', category: 'Frontend' },
-    { name: 'TypeScript', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', category: 'Frontend' },
-    { name: 'MySQL', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', category: 'Database' },
-    { name: 'Redis', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg', category: 'Cache' },
-    { name: 'React', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', category: 'Frontend' },
-    { name: 'Python', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', category: 'AI' },
-    { name: 'Git', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', category: 'Tools' }
+    { name: 'Java', url: 'tech/java.svg', category: 'Backend' },
+    { name: 'Spring Boot', url: 'tech/spring.svg', category: 'Backend' },
+    { name: 'Angular', url: 'tech/angular.svg', category: 'Frontend' },
+    { name: 'TypeScript', url: 'tech/typescript.svg', category: 'Frontend' },
+    { name: 'MySQL', url: 'tech/mysql.svg', category: 'Database' },
+    { name: 'Redis', url: 'tech/redis.svg', category: 'Cache' },
+    { name: 'React', url: 'tech/react.svg', category: 'Frontend' },
+    { name: 'Python', url: 'tech/python.svg', category: 'AI' },
+    { name: 'Git', url: 'tech/git.svg', category: 'Tools' }
   ];
 
   learning = [
@@ -503,7 +507,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       ]
     },
     {
-      role: 'Lecturer in Computer Science',
+      role: 'Lecturer & Head of Department, Computer Science',
       prior: true,
       org: 'Suvidya Degree College & Sri Chaitanya',
       period: '2008 – 2021 · Telangana, India',
@@ -523,10 +527,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     linkedin: 'https://www.linkedin.com/in/thirupathi-murala/',
     github: 'https://github.com/murala-thirupathi',
     summary:
-      'Backend-first Full-Stack Developer with 5+ years of production experience engineering multi-tenant SaaS platforms at AITITUDE IT. Specialist in Java 17/21, Spring Boot 3, and Angular 18, with proven ability to ship production AI capabilities (OpenAI, Gemini, LangGraph, RAG) with deterministic validation and human review gates. Proven technical leadership designing high-stakes financial approval engines with cryptographic audit trails, query optimization with Redis, and clean API design.',
+      'Backend-first Full-Stack Developer with 5+ years of production experience engineering multi-tenant SaaS platforms at AITITUDE IT. Specialist in Java 17, Spring Boot 3, and Angular 18, with proven ability to ship production AI capabilities (OpenAI, Gemini, LangGraph, RAG) with deterministic validation and human review gates. Proven technical leadership designing high-stakes financial approval engines with cryptographic audit trails, query optimization with Redis, and clean API design.',
     skills: [
-      { category: 'Backend & Systems', items: ['Java 17/21', 'Spring Boot 3', 'REST APIs', 'JdbcTemplate', 'JPA/Hibernate', 'Microservices', 'MySQL', 'SQL Server', 'Redis', 'JWT/RBAC'] },
-      { category: 'Frontend Engineering', items: ['Angular 18/16', 'TypeScript', 'RxJS', 'Standalone Components', 'HTML5/CSS3', 'Responsive Design', 'Bootstrap 5'] },
+      { category: 'Backend & Systems', items: ['Java 17', 'Spring Boot 3', 'REST APIs', 'JdbcTemplate', 'JPA/Hibernate', 'Microservices', 'MySQL', 'SQL Server', 'Redis', 'JWT/RBAC'] },
+      { category: 'Frontend Engineering', items: ['Angular 16-18', 'TypeScript', 'RxJS', 'Standalone Components', 'HTML5/CSS3', 'Responsive Design', 'Bootstrap 5'] },
       { category: 'AI & Intelligent Systems', items: ['OpenAI API', 'Google Gemini', 'LangGraph', 'RAG (Retrieval-Augmented Generation)', 'Vector Search', 'Prompt Guardrails', 'Structured JSON Output'] },
       { category: 'DevOps & Tools', items: ['AWS S3/EC2', 'Docker', 'Git / GitHub Actions', 'CI/CD', 'Linux', 'Maven', 'Postman', 'Agile / Scrum'] }
     ]
@@ -676,9 +680,17 @@ ${exp.points.map((p) => `• ${p}`).join('\n')}`
     }
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
+    // Seed before the first change-detection pass; doing this in
+    // ngAfterViewInit mutates an already-checked binding (NG0100).
     this.tickTime();
-    this.timer = setInterval(() => this.tickTime(), 30000);
+  }
+
+  ngAfterViewInit(): void {
+    this.timer = setInterval(() => {
+      this.tickTime();
+      this.cdr.markForCheck();
+    }, 30000);
     this.initScrollListener();
     this.initReveal();
     this.initCardEffects();
