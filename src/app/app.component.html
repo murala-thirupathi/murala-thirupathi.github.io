@@ -1,4 +1,4 @@
-<a class="skip" href="#proof">Skip to content</a>
+<a class="skip" href="#work">Skip to content</a>
 
 <svg class="sprite" aria-hidden="true" focusable="false">
   <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2-6 5 12 2-6h5"/></symbol>
@@ -10,9 +10,16 @@
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s6-5.1 6-10.4a6 6 0 1 0-12 0C6 15.9 12 21 12 21z"/><circle cx="12" cy="10.6" r="2"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 19 6v5.5c0 4.2-2.7 7.8-7 9.5-4.3-1.7-7-5.3-7-9.5V6l7-3z"/><path d="m8.7 12 2.2 2.2 4.6-5"/></symbol>
   <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v5M12 16v5M3 12h5M16 12h5M6.3 6.3l3.5 3.5M14.2 14.2l3.5 3.5M17.7 6.3l-3.5 3.5M9.8 14.2l-3.5 3.5"/></symbol>
+  <symbol id="i-document" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
 </svg>
 
-<div class="progress" [style.width.%]="scrollProgress" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
 
 <header class="nav">
   <div class="wrap nav-inner">
@@ -22,18 +29,30 @@
     </a>
 
     <nav class="links" aria-label="Primary">
-      <a *ngFor="let item of navItems" [href]="'#' + item.id" [class.active]="activeSection === item.id">
-        {{ item.label }}
-      </a>
-      <a class="nav-cta" [href]="'mailto:' + email">Email</a>
+      @for (item of navItems; track item.id) {
+        <a [href]="'#' + item.id" [class.active]="activeSection === item.id">
+          {{ item.label }}
+        </a>
+      }
     </nav>
 
     <div class="nav-actions">
+      <button class="nav-resume-btn" type="button" (click)="openResume()">
+        <svg class="glyph-sm" aria-hidden="true"><use href="#i-document"></use></svg>
+        <span>Resume</span>
+      </button>
+
+      <a class="nav-cta" [href]="'mailto:' + email">Email</a>
+
       <button class="icon-btn" type="button" (click)="toggleTheme()"
         [attr.aria-label]="'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode'">
-        <span class="theme-sun" *ngIf="theme === 'dark'"></span>
-        <span class="theme-moon" *ngIf="theme === 'light'"></span>
+        @if (theme === 'dark') {
+          <span class="theme-sun" aria-hidden="true"></span>
+        } @else {
+          <span class="theme-moon" aria-hidden="true"></span>
+        }
       </button>
+
       <button class="icon-btn menu-btn" type="button" (click)="toggleMenu()" aria-controls="mobile-menu"
         [attr.aria-expanded]="menuOpen" aria-label="Toggle menu">
         <span class="hamb" [class.open]="menuOpen"></span>
@@ -42,237 +61,422 @@
   </div>
 
   <div id="mobile-menu" class="mobile-panel" [class.open]="menuOpen">
-    <a *ngFor="let item of navItems" [href]="'#' + item.id" (click)="closeMenu()">{{ item.label }}</a>
+    @for (item of navItems; track item.id) {
+      <a [href]="'#' + item.id" (click)="closeMenu()">{{ item.label }}</a>
+    }
+    <a href="javascript:void(0)" (click)="closeMenu(); openResume()">Resume / CV</a>
     <a href="#contact" (click)="closeMenu()">Contact</a>
   </div>
 </header>
 
 <nav class="rail" aria-label="Section progress">
-  <a *ngFor="let item of navItems; let i = index" [href]="'#' + item.id" [class.active]="activeSection === item.id">
-    <span>{{ (i + 1).toString().padStart(2, '0') }}</span>{{ item.label }}
-  </a>
+  @for (item of navItems; track item.id; let i = $index) {
+    <a [href]="'#' + item.id" [class.active]="activeSection === item.id">
+      <span>{{ (i + 1).toString().padStart(2, '0') }}</span>{{ item.label }}
+    </a>
+  }
 </nav>
 
 <main>
+  <!-- Hero Section -->
   <section id="top" class="hero" aria-label="Introduction">
-    <div class="hero-grid" (mousemove)="onHeroMove($event)" (mouseleave)="onHeroLeave($event)">
+    <div class="hero-grid">
       <div class="wrap hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow reveal in-view">Full-Stack Developer / Hyderabad / Remote-ready</p>
+          <div class="eyebrow-container reveal in-view">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <p class="eyebrow">Full-Stack Engineer · Hyderabad · Remote-Ready</p>
+          </div>
+
           <h1 class="reveal in-view">{{ headline }}</h1>
           <p class="role-line reveal in-view">{{ roleLine }}</p>
           <p class="intro reveal in-view">{{ intro }}</p>
 
           <div class="hero-actions reveal in-view">
-            <a class="btn primary" [href]="'mailto:' + email">Start a conversation</a>
+            <button class="btn primary resume-trigger" type="button" (click)="openResume()">
+              <svg class="glyph-sm" aria-hidden="true"><use href="#i-document"></use></svg>
+              <span>View / Print Resume</span>
+            </button>
+            <a class="btn quiet" [href]="'mailto:' + email">Email me</a>
             <a class="btn quiet" [href]="linkedin" target="_blank" rel="noopener">LinkedIn</a>
             <a class="btn quiet" [href]="github" target="_blank" rel="noopener">GitHub</a>
           </div>
         </div>
 
         <aside class="hero-card reveal in-view" aria-label="Recruiter quick scan">
-          <div class="portrait" *ngIf="photoOk">
-            <img src="me-640.webp" srcset="me-380.webp 380w, me-640.webp 640w"
-                 sizes="(max-width: 720px) 300px, 354px"
-                 alt="Portrait of Murala Thirupathi" width="354" height="354"
-                 fetchpriority="high" decoding="async" (error)="onPhotoError()">
-          </div>
+          <div class="card-glow" aria-hidden="true"></div>
+          @if (photoOk) {
+            <div class="portrait">
+              <img src="me-640.webp" srcset="me-380.webp 380w, me-640.webp 640w"
+                   sizes="(max-width: 720px) 300px, 354px"
+                   alt="Portrait of Murala Thirupathi" width="354" height="354"
+                   fetchpriority="high" decoding="async" (error)="onPhotoError()">
+            </div>
+          }
           <div class="availability">
             <span class="live-dot" aria-hidden="true"></span>
-            Open to Full-Stack, Java Backend and AI Engineering roles
+            <span>Open to Full-Stack, Java Backend & AI Roles</span>
           </div>
+
           <div class="scan-lines">
-            <div *ngFor="let signal of signals">
-              <span>{{ signal.label }}</span>
-              <strong>{{ signal.value }}</strong>
-            </div>
+            @for (signal of signals; track signal.label) {
+              <div>
+                <span>{{ signal.label }}</span>
+                <strong>{{ signal.value }}</strong>
+              </div>
+            }
           </div>
+
           <div class="location-line">
             <span>{{ location }}</span>
             <span class="mono">{{ hydTime }}</span>
+          </div>
+
+          <div class="hero-card-quick-actions">
+            <button class="btn-micro" type="button" (click)="openResume()">
+              <svg class="glyph-xs" aria-hidden="true"><use href="#i-document"></use></svg>
+              <span>Download CV</span>
+            </button>
+            <button class="btn-micro" type="button" (click)="copyEmail()">
+              <svg class="glyph-xs" aria-hidden="true"><use href="#i-copy"></use></svg>
+              <span>{{ copied ? 'Copied!' : 'Copy Email' }}</span>
+            </button>
           </div>
         </aside>
       </div>
 
       <div class="wrap fit-strip reveal in-view" aria-label="Role fit">
-        <article *ngFor="let item of fitMatrix">
-          <span>Hire for</span>
-          <strong>{{ item.title }}</strong>
-          <p>{{ item.desc }}</p>
-        </article>
+        @for (item of fitMatrix; track item.title) {
+          <article>
+            <span class="fit-kicker">Hire for</span>
+            <strong>{{ item.title }}</strong>
+            <p>{{ item.desc }}</p>
+          </article>
+        }
       </div>
     </div>
   </section>
+
+  <!-- Work / Case Studies Section -->
   <section id="work" class="section work" aria-labelledby="h-work">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="kicker">01 / Case studies</span>
-        <h2 id="h-work">Selected work, with the business context.</h2>
-        <p>Each one states the problem, the engineering decisions I made, and what it changed.</p>
+        <h2 id="h-work">Selected engineering work in production.</h2>
+        <p>Real enterprise problems, architectural decisions, and verifiable business outcomes.</p>
       </div>
 
+      <!-- Recruiter Role Filter Bar -->
+      <div class="role-filter-bar reveal" role="tablist" aria-label="Filter case studies by engineering role">
+        <span class="filter-label">Filter by specialty:</span>
+        <div class="filter-pills">
+          <button class="pill-btn" type="button" [class.active]="selectedRole === 'all'" (click)="setRoleFilter('all')">
+            All Projects (8)
+          </button>
+          <button class="pill-btn" type="button" [class.active]="selectedRole === 'fullstack'" (click)="setRoleFilter('fullstack')">
+            Full-Stack & Cloud (6)
+          </button>
+          <button class="pill-btn" type="button" [class.active]="selectedRole === 'backend'" (click)="setRoleFilter('backend')">
+            Java & Backend (7)
+          </button>
+          <button class="pill-btn" type="button" [class.active]="selectedRole === 'ai'" (click)="setRoleFilter('ai')">
+            Production AI & RAG (3)
+          </button>
+        </div>
+      </div>
+
+      <!-- Featured Case Studies with Interactive Tabs -->
       <div class="cases">
-        <article class="case reveal" *ngFor="let project of featuredProjects; let i = index">
-          <header class="case-head">
-            <span class="case-index mono">{{ (i + 1).toString().padStart(2, '0') }}</span>
-            <span class="project-cat">
-              <svg class="glyph" aria-hidden="true"><use [attr.href]="'#i-' + iconFor(project)"></use></svg>
-              {{ project.cat }}
-            </span>
-            <span class="badge" *ngIf="project.badge">{{ project.badge }}</span>
-          </header>
-
-          <div class="case-body">
-            <div class="case-intro">
-              <h3>{{ project.name }}</h3>
-              <p class="case-lede">{{ project.desc }}</p>
-              <div class="case-block">
-                <h4>Problem</h4>
-                <p>{{ project.caseStudy.problem }}</p>
-              </div>
-              <p class="proof-line">{{ project.proof }}</p>
-              <div class="tags compact">
-                <span *ngFor="let tag of project.tech">{{ tag }}</span>
-              </div>
-            </div>
-
-            <div class="case-detail">
-              <figure class="arch" *ngIf="project.pipeline">
-                <figcaption>How it runs in production</figcaption>
-                <ol class="arch-flow">
-                  <li *ngFor="let stage of project.pipeline; let j = index; let last = last"
-                      [class.is-gate]="j === project.gate" [class.is-last]="last">
-                    <span class="arch-node">{{ stage }}</span>
-                  </li>
-                </ol>
-                <p class="arch-note" *ngIf="project.gateNote">
-                  <span class="arch-note-key" aria-hidden="true"></span>{{ project.gateNote }}
-                </p>
-              </figure>
-
-              <div class="case-block">
-                <h4>Approach</h4>
-                <ul>
-                  <li *ngFor="let step of project.caseStudy.approach">{{ step }}</li>
-                </ul>
-              </div>
-
-              <div class="case-block">
-                <h4>Outcome</h4>
-                <p class="outcome">{{ project.caseStudy.outcome }}</p>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div class="more-work reveal">
-        <h3>More product work</h3>
-        <div class="more-grid">
-          <article class="mini" *ngFor="let project of moreProjects; let i = index"
-            (mousemove)="onCardMove($event)" (mouseleave)="onCardLeave($event)">
-            <div class="mini-top">
+        @for (project of filteredFeaturedProjects; track project.id; let i = $index) {
+          <article class="case reveal">
+            <header class="case-head">
+              <span class="case-index mono">{{ (i + 1).toString().padStart(2, '0') }}</span>
               <span class="project-cat">
                 <svg class="glyph" aria-hidden="true"><use [attr.href]="'#i-' + iconFor(project)"></use></svg>
                 {{ project.cat }}
               </span>
-              <span class="case-index mono">{{ (i + 5).toString().padStart(2, '0') }}</span>
-            </div>
-            <h4>{{ project.name }}</h4>
-            <p>{{ project.desc }}</p>
-            <p class="mini-outcome"><span>Outcome</span>{{ project.caseStudy.outcome }}</p>
-            <div class="tags compact">
-              <span *ngFor="let tag of project.tech">{{ tag }}</span>
+              @if (project.badge) {
+                <span class="badge">{{ project.badge }}</span>
+              }
+            </header>
+
+            <div class="case-body">
+              <div class="case-intro">
+                <h3>{{ project.name }}</h3>
+                <p class="case-lede">{{ project.desc }}</p>
+
+                <div class="case-block">
+                  <h4>The Business Problem</h4>
+                  <p>{{ project.caseStudy.problem }}</p>
+                </div>
+
+                <p class="proof-line">{{ project.proof }}</p>
+
+                <div class="tags compact">
+                  @for (tag of project.tech; track tag) {
+                    <span>{{ tag }}</span>
+                  }
+                </div>
+              </div>
+
+              <div class="case-detail">
+                <!-- Interactive Tabs for Architecture, Tradeoffs, and Metrics -->
+                <div class="case-tabs-nav" role="tablist">
+                  <button class="tab-trigger" type="button"
+                          [class.active]="getProjectTab(project.id) === 'pipeline'"
+                          (click)="setProjectTab(project.id, 'pipeline')">
+                    <svg class="glyph-xs" aria-hidden="true"><use href="#i-flow"></use></svg>
+                    <span>Pipeline Flow</span>
+                  </button>
+                  @if (project.tradeoffs && project.tradeoffs.length > 0) {
+                    <button class="tab-trigger" type="button"
+                            [class.active]="getProjectTab(project.id) === 'tradeoffs'"
+                            (click)="setProjectTab(project.id, 'tradeoffs')">
+                      <svg class="glyph-xs" aria-hidden="true"><use href="#i-scale"></use></svg>
+                      <span>Architectural Trade-offs</span>
+                    </button>
+                  }
+                  @if (project.metrics && project.metrics.length > 0) {
+                    <button class="tab-trigger" type="button"
+                            [class.active]="getProjectTab(project.id) === 'metrics'"
+                            (click)="setProjectTab(project.id, 'metrics')">
+                      <svg class="glyph-xs" aria-hidden="true"><use href="#i-chart"></use></svg>
+                      <span>Production Metrics</span>
+                    </button>
+                  }
+                </div>
+
+                <!-- Tab Panel 1: Production Pipeline Diagram -->
+                @if (getProjectTab(project.id) === 'pipeline') {
+                  <figure class="arch tab-content-panel">
+                    <figcaption>How it runs in production with safety guardrails</figcaption>
+                    <ol class="arch-flow">
+                      @for (stage of project.pipeline; track stage; let j = $index; let last = $last) {
+                        <li [class.is-gate]="j === project.gate" [class.is-last]="last">
+                          <span class="arch-node">{{ stage }}</span>
+                        </li>
+                      }
+                    </ol>
+                    @if (project.gateNote) {
+                      <p class="arch-note">
+                        <span class="arch-note-key" aria-hidden="true"></span>
+                        <strong>Safety Gate:</strong> {{ project.gateNote }}
+                      </p>
+                    }
+                  </figure>
+                }
+
+                <!-- Tab Panel 2: Trade-offs & Key Decisions -->
+                @if (getProjectTab(project.id) === 'tradeoffs' && project.tradeoffs) {
+                  <div class="tradeoffs-panel tab-content-panel">
+                    <h5 class="panel-heading">Key Architectural Decisions & Rationale</h5>
+                    <div class="tradeoffs-grid">
+                      @for (tradeoff of project.tradeoffs; track tradeoff.decision) {
+                        <div class="tradeoff-card">
+                          <strong class="tradeoff-decision">{{ tradeoff.decision }}</strong>
+                          <p class="tradeoff-why">{{ tradeoff.why }}</p>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Tab Panel 3: Production Metrics -->
+                @if (getProjectTab(project.id) === 'metrics' && project.metrics) {
+                  <div class="metrics-panel tab-content-panel">
+                    <h5 class="panel-heading">Measurable Production Results</h5>
+                    <div class="metrics-grid">
+                      @for (metric of project.metrics; track metric.label) {
+                        <div class="metric-card">
+                          <span class="metric-val mono">{{ metric.value }}</span>
+                          <span class="metric-label">{{ metric.label }}</span>
+                          <p class="metric-context">{{ metric.context }}</p>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Approach & Outcome -->
+                <div class="case-block">
+                  <h4>Engineering Approach</h4>
+                  <ul>
+                    @for (step of project.caseStudy.approach; track step) {
+                      <li>{{ step }}</li>
+                    }
+                  </ul>
+                </div>
+
+                <div class="case-block">
+                  <h4>Business Outcome</h4>
+                  <p class="outcome">{{ project.caseStudy.outcome }}</p>
+                </div>
+              </div>
             </div>
           </article>
-        </div>
+        } @empty {
+          <div class="empty-state">
+            <p>No featured projects match this filter.</p>
+            <button class="btn quiet" type="button" (click)="setRoleFilter('all')">View All Projects</button>
+          </div>
+        }
       </div>
+
+      <!-- Secondary Work Grid -->
+      @if (filteredMoreProjects.length > 0) {
+        <div class="more-work reveal">
+          <h3>More Enterprise Modules & Workflows</h3>
+          <div class="more-grid">
+            @for (project of filteredMoreProjects; track project.id; let i = $index) {
+              <article class="mini">
+                <div class="mini-top">
+                  <span class="project-cat">
+                    <svg class="glyph" aria-hidden="true"><use [attr.href]="'#i-' + iconFor(project)"></use></svg>
+                    {{ project.cat }}
+                  </span>
+                  <span class="case-index mono">{{ (i + 5).toString().padStart(2, '0') }}</span>
+                </div>
+                <h4>{{ project.name }}</h4>
+                <p>{{ project.desc }}</p>
+                <p class="mini-outcome"><span>Outcome</span>{{ project.caseStudy.outcome }}</p>
+                <div class="tags compact">
+                  @for (tag of project.tech; track tag) {
+                    <span>{{ tag }}</span>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      }
     </div>
   </section>
+
+  <!-- Recruiter Proof / Shortlist Section -->
   <section id="proof" class="section proof" aria-labelledby="h-proof">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="kicker">02 / Recruiter proof</span>
-        <h2 id="h-proof">The reasons to shortlist me.</h2>
+        <h2 id="h-proof">Why engineering teams shortlist me.</h2>
+        <p>A proven track record of shipping end-to-end features, tuning systems, and maintaining production hygiene.</p>
       </div>
 
       <div class="impact-grid">
-        <article class="impact-card reveal" *ngFor="let item of impact; let i = index" [style.transition-delay.ms]="i * 40"
-          (mousemove)="onCardMove($event)" (mouseleave)="onCardLeave($event)">
-          <strong>{{ item.hi }}</strong>
-          <h3>{{ item.label }}</h3>
-          <p>{{ item.desc }}</p>
-        </article>
+        @for (item of impact; track item.label; let i = $index) {
+          <article class="impact-card reveal" [style.transition-delay.ms]="i * 40">
+            <strong>{{ item.hi }}</strong>
+            <h3>{{ item.label }}</h3>
+            <p>{{ item.desc }}</p>
+          </article>
+        }
       </div>
     </div>
   </section>
+
+  <!-- Craft / Expertise Section -->
   <section id="craft" class="section craft" aria-labelledby="h-craft">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="kicker">03 / How I work</span>
-        <h2 id="h-craft">How I work.</h2>
+        <span class="kicker">03 / Engineering craft</span>
+        <h2 id="h-craft">How I design and deliver software.</h2>
+        <p>Balancing clean architecture, performance optimization, and pragmatic product delivery.</p>
       </div>
 
       <div class="craft-grid">
-        <article class="capability reveal" *ngFor="let item of expertise; let i = index" [style.transition-delay.ms]="i * 40">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.blurb }}</p>
-          <div class="tags compact">
-            <span *ngFor="let chip of item.chips">{{ chip }}</span>
-          </div>
-        </article>
+        @for (item of expertise; track item.title; let i = $index) {
+          <article class="capability reveal" [style.transition-delay.ms]="i * 40">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.blurb }}</p>
+            <div class="tags compact">
+              @for (chip of item.chips; track chip) {
+                <span>{{ chip }}</span>
+              }
+            </div>
+          </article>
+        }
       </div>
 
-      <div class="stack-strip reveal" aria-label="Technology stack">
-        <img *ngFor="let tech of stack" [src]="tech.url" [alt]="tech.name" [title]="tech.name" width="42" height="42" loading="lazy">
+      <div class="stack-section reveal">
+        <h3 class="stack-heading">Battle-Tested Technology Stack</h3>
+        <div class="stack-strip" aria-label="Technology stack">
+          @for (tech of stack; track tech.name) {
+            <div class="tech-item" [title]="tech.name + ' (' + tech.category + ')'">
+              <img [src]="tech.url" [alt]="tech.name" width="44" height="44" loading="lazy">
+              <span class="tech-name">{{ tech.name }}</span>
+            </div>
+          }
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- Experience / Career Timeline Section -->
   <section id="experience" class="section experience" aria-labelledby="h-experience">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="kicker">04 / Track record</span>
         <h2 id="h-experience">Five-plus years shipping production software.</h2>
+        <p>Continuous evolution from computer science educator to full-stack enterprise product engineer.</p>
       </div>
 
       <div class="timeline">
-        <article class="job reveal" *ngFor="let job of experience; let i = index" [class.prior]="job.prior"
-                 [style.transition-delay.ms]="i * 40">
-          <div class="job-head">
-            <h3>{{ job.role }}</h3>
-            <span>{{ job.period }}</span>
-          </div>
-          <p class="org">{{ job.org }}</p>
-          <ul>
-            <li *ngFor="let point of job.points">{{ point }}</li>
-          </ul>
-        </article>
+        @for (job of experience; track job.role; let i = $index) {
+          <article class="job reveal" [class.prior]="job.prior" [style.transition-delay.ms]="i * 40">
+            <div class="job-head">
+              <div>
+                <h3>{{ job.role }}</h3>
+                <p class="org">{{ job.org }}</p>
+              </div>
+              <span class="job-period mono">{{ job.period }}</span>
+            </div>
+            <ul>
+              @for (point of job.points; track point) {
+                <li>{{ point }}</li>
+              }
+            </ul>
+          </article>
+        }
       </div>
     </div>
   </section>
+
+  <!-- Trajectory Section -->
   <section id="trajectory" class="section trajectory" aria-labelledby="h-growth">
     <div class="wrap trajectory-grid">
       <div class="section-head reveal">
         <span class="kicker">05 / Where I invest next</span>
         <h2 id="h-growth">Where I invest next.</h2>
-        <p>Going deeper into production-grade AI: retrieval quality, tool use, stateful agents, and the engineering discipline that makes model output safe to ship.</p>
+        <p>Going deeper into production-grade AI systems: LangGraph multi-agent orchestration, hybrid vector search with reranking, and observability that makes autonomous agents safe to deploy.</p>
       </div>
       <div class="learning-board reveal">
-        <span *ngFor="let item of learning">{{ item }}</span>
+        @for (item of learning; track item) {
+          <span>{{ item }}</span>
+        }
       </div>
     </div>
   </section>
+
+  <!-- Contact Section -->
   <section id="contact" class="section contact" aria-labelledby="h-contact">
     <div class="wrap contact-inner reveal">
-      <span class="kicker">06 / Contact</span>
-      <h2 id="h-contact">Looking for an engineer who can own the backend, the UI and the AI layer?</h2>
-      <p>Available for full-stack, Java backend, Angular frontend and AI product engineering roles in Hyderabad, hybrid or remote. I reply to every message.</p>
+      <span class="kicker">06 / Let's connect</span>
+      <h2 id="h-contact">Need an engineer who can own the backend, the UI, and the AI layer?</h2>
+      <p>Available for Full-Stack, Java Backend, Angular, and AI Product Engineering roles in Hyderabad, hybrid, or remote. I respond promptly to every message.</p>
+
       <div class="hero-actions">
-        <a class="btn primary" [href]="'mailto:' + email">Email me</a>
-        <button class="btn quiet" type="button" (click)="copyEmail()">{{ copied ? 'Copied' : 'Copy email' }}</button>
+        <button class="btn primary resume-trigger" type="button" (click)="openResume()">
+          <svg class="glyph-sm" aria-hidden="true"><use href="#i-document"></use></svg>
+          <span>View / Print Resume</span>
+        </button>
+        <a class="btn quiet" [href]="'mailto:' + email">Email me directly</a>
+        <button class="btn quiet" type="button" (click)="copyEmail()">{{ copied ? 'Email Copied!' : 'Copy Email' }}</button>
         <a class="btn quiet" [href]="linkedin" target="_blank" rel="noopener">LinkedIn</a>
       </div>
-      <p class="mono contact-email">{{ email }} / {{ phone }}</p>
+
+      <div class="contact-footer-info">
+        <p class="mono contact-email">{{ email }} · {{ phone }}</p>
+        <p class="contact-location">{{ location }}</p>
+      </div>
     </div>
   </section>
 </main>
@@ -280,7 +484,107 @@
 <footer class="foot">
   <div class="wrap foot-inner">
     <span>{{ name }}</span>
-    <span>Full-stack engineering / Java / Angular / Production AI</span>
+    <span>Full-Stack Engineering · Java · Spring Boot · Angular · Production AI</span>
     <span class="mono">{{ year }}</span>
   </div>
 </footer>
+
+<!-- Full ATS-Ready Executive Resume Modal -->
+@if (resumeOpen) {
+  <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="resume-title" (click)="closeResume()">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <div class="modal-header-actions">
+          <button class="modal-action-btn primary-action" type="button" (click)="printResume()">
+            <svg class="glyph-sm" aria-hidden="true"><use href="#i-print"></use></svg>
+            <span>Print / Save as PDF</span>
+          </button>
+          <button class="modal-action-btn" type="button" (click)="copyResumeText()">
+            <svg class="glyph-sm" aria-hidden="true"><use href="#i-copy"></use></svg>
+            <span>{{ resumeCopied ? 'Copied to Clipboard!' : 'Copy Plain Text' }}</span>
+          </button>
+          <button class="modal-close-btn" type="button" (click)="closeResume()" aria-label="Close resume dialog">
+            <svg class="glyph-sm" aria-hidden="true"><use href="#i-close"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <article class="resume-document" id="printable-resume">
+        <div class="res-head">
+          <h1 id="resume-title">{{ resumeData.name }}</h1>
+          <p class="res-title">{{ resumeData.title }}</p>
+          <div class="res-meta mono">
+            <span>{{ resumeData.email }}</span> ·
+            <span>{{ resumeData.phone }}</span> ·
+            <span>{{ resumeData.location }}</span>
+          </div>
+          <div class="res-links mono">
+            <a [href]="resumeData.linkedin" target="_blank" rel="noopener">LinkedIn</a> ·
+            <a [href]="resumeData.github" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+
+        <section class="res-section">
+          <h2>Professional Summary</h2>
+          <p>{{ resumeData.summary }}</p>
+        </section>
+
+        <section class="res-section">
+          <h2>Technical Expertise</h2>
+          <div class="res-skills-grid">
+            @for (skillGroup of resumeData.skills; track skillGroup.category) {
+              <div class="res-skill-row">
+                <strong>{{ skillGroup.category }}:</strong>
+                <span>{{ skillGroup.items.join(', ') }}</span>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="res-section">
+          <h2>Professional Experience</h2>
+          <div class="res-experience-list">
+            <article class="res-job">
+              <div class="res-job-head">
+                <div>
+                  <h3>Full-Stack Developer</h3>
+                  <p class="res-org">AITITUDE IT Pvt Ltd · Hyderabad, India</p>
+                </div>
+                <span class="mono res-date">Feb 2021 – Present (5+ Years)</span>
+              </div>
+              <ul class="res-bullets">
+                <li>Introduced the platform’s first production AI capabilities using OpenAI: an AI clinical assistant for physicians and an automated field vision extraction pipeline using Spring Boot and Angular.</li>
+                <li>Technical lead on high-stakes Capital Approval Engine: designed multi-level amount-slab routing, parallel approvals, and a SHA-256 hash-chained immutable audit trail verified via QR codes.</li>
+                <li>Delivered 20+ production features end-to-end across 35+ business domains (HRMS, fleet logistics, health, invoicing, and incident management) in a multi-tenant environment.</li>
+                <li>Tuned high-latency SQL queries and integrated Redis caching on critical read paths, reducing API response times on heavy reporting tables.</li>
+                <li>Collaborated on modernizing enterprise UI from Angular 16 to Angular 18 with standalone components and Bootstrap 5.</li>
+              </ul>
+            </article>
+
+            <article class="res-job prior">
+              <div class="res-job-head">
+                <div>
+                  <h3>Lecturer in Computer Science</h3>
+                  <p class="res-org">Suvidya Degree College & Sri Chaitanya · Telangana, India</p>
+                </div>
+                <span class="mono res-date">2008 – 2021 (13 Years)</span>
+              </div>
+              <ul class="res-bullets">
+                <li>Taught Java, Data Structures, OOP, and Database Systems to undergraduate engineering and computer science students.</li>
+                <li>Led the Computer Science department, mentored hundreds of students into tech careers, and developed a deep mastery of core software fundamentals and technical communication.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="res-section">
+          <h2>Education & Credentials</h2>
+          <div class="res-edu">
+            <p><strong>Master of Science (M.Sc.) & Bachelor of Science (B.Sc.) in Computer Science</strong></p>
+            <p class="res-edu-sub">Specialization in Software Engineering, Algorithms & Database Systems</p>
+          </div>
+        </section>
+      </article>
+    </div>
+  </div>
+}

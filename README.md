@@ -22,10 +22,10 @@ ng build
 ```
 
 ## Deploy
-Hosted free on Netlify — see `netlify.toml` (build `npm run build`, publish `dist/portfolio/browser`).
+Hosted on GitHub Pages (`https://murala-thirupathi.github.io/`) and Netlify.
 
 ## Contact
 - LinkedIn: https://www.linkedin.com/in/thirupathi-murala/
-- GitHub: https://github.com/MTRao516
+- GitHub: https://github.com/murala-thirupathi
 - Email: thirupathiraomurala@gmail.com
 - Hyderabad, India — or Remote
