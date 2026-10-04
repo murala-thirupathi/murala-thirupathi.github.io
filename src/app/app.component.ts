@@ -583,6 +583,27 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activeTabMap[id] = tab;
   }
 
+  /**
+   * Mobile-only progressive disclosure for the deep case-study detail.
+   * At 390px the four featured cards were ~1,860px each - half the page.
+   * The summary (problem, proof, stack) stays visible so the card is still
+   * scannable; the tabs, approach and outcome open on request. Desktop
+   * ignores this entirely - the CSS that acts on it is inside a media query.
+   */
+  private openDetail = new Set<string>();
+
+  isDetailOpen(id: string): boolean {
+    return this.openDetail.has(id);
+  }
+
+  toggleDetail(id: string): void {
+    if (this.openDetail.has(id)) {
+      this.openDetail.delete(id);
+    } else {
+      this.openDetail.add(id);
+    }
+  }
+
   toggleTheme(): void {
     this.theme = this.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', this.theme);

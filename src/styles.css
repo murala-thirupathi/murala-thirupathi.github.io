@@ -2414,3 +2414,86 @@ strong {
   /* Pills keep their compact look but gain a tappable box. */
   .pill-btn { padding-block: 10px; }
 }
+
+/* ---------------------------------------------------------------------------
+   Case-study detail: progressive disclosure on phones only.
+   At 390px the four featured cards ran ~1,860px each and the Work section
+   alone was 9,776px of a 19,432px page. The summary stays visible so the
+   card is still scannable; the tabs, approach and outcome open on tap.
+   The toggle does not exist on desktop, where the full detail shows as before.
+--------------------------------------------------------------------------- */
+.detail-toggle { display: none; }
+
+@media (max-width: 760px) {
+  .detail-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 14px;
+    padding: 11px 16px;
+    border: 1px solid var(--line, #d9dee8);
+    border-radius: 12px;
+    background: var(--surface-2, #f7f9fc);
+    color: inherit;
+    font: inherit;
+    font-size: .95rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .detail-toggle:hover { background: var(--surface-3, #eef2f8); }
+
+  .detail-toggle .chev {
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform .18s ease;
+  }
+
+  .detail-toggle[aria-expanded="true"] .chev {
+    transform: rotate(-135deg) translate(-2px, -2px);
+  }
+
+  .case-detail.m-collapsed { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-toggle .chev { transition: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero actions on phones: the primary CTA keeps the full width; the three
+   secondary links share a row instead of stacking, which removes ~110px of
+   dead vertical space above the fold without shrinking any tap target
+   (each stays >=44px tall).
+--------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .hero-actions .btn.primary {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .hero-actions .btn.quiet {
+    width: 100%;
+    padding-inline: 8px;
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+
+/* Below ~360px three across gets tight; fall back to two columns. */
+@media (max-width: 359px) {
+  .hero-actions { grid-template-columns: repeat(2, 1fr); }
+}

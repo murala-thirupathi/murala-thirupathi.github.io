@@ -219,7 +219,18 @@
                 </div>
               </div>
 
-              <div class="case-detail">
+              <!-- Mobile-only: the detail below is long on a phone, so it
+                   opens on request. Hidden on desktop by CSS. -->
+              <button class="detail-toggle" type="button"
+                      [attr.aria-expanded]="isDetailOpen(project.id)"
+                      [attr.aria-controls]="'detail-' + project.id"
+                      (click)="toggleDetail(project.id)">
+                <span>{{ isDetailOpen(project.id) ? 'Hide engineering detail' : 'Show engineering detail' }}</span>
+                <span class="chev" aria-hidden="true"></span>
+              </button>
+
+              <div class="case-detail" [id]="'detail-' + project.id"
+                   [class.m-collapsed]="!isDetailOpen(project.id)">
                 <!-- Interactive Tabs for Architecture, Tradeoffs, and Metrics -->
                 <div class="case-tabs-nav" role="tablist">
                   <button class="tab-trigger" type="button"
