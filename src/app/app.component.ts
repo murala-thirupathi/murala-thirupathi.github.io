@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   initials = 'MTR';
   email = 'thirupathiraomurala@gmail.com';
   phone = '+91 96400 46001';
-  location = 'Hyderabad, Telangana (HITEC City · Financial District · Remote)';
+  location = 'Hyderabad, Telangana, India';
   linkedin = 'https://www.linkedin.com/in/thirupathi-murala/';
   github = 'https://github.com/murala-thirupathi';
   year = new Date().getFullYear();
@@ -150,7 +150,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Core Stack', value: 'Java 17 · Spring Boot 3 · Angular 18' },
     { label: 'Experience', value: '5+ Years Building Multi-Tenant SaaS' },
     { label: 'Notice Period', value: 'Immediate / Serving Notice (Ready to Join)' },
-    { label: 'Location / Work Mode', value: 'Hyderabad (HITEC City / Fin District / Hybrid)' }
+    { label: 'Location / Work Mode', value: 'Hyderabad · Hybrid or Remote' }
   ];
 
   fitMatrix: Fit[] = [
